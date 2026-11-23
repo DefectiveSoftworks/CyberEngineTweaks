@@ -313,7 +313,8 @@ bool D3D12::InitializeImGui(size_t aBuffersCounts)
     ImGui::GetStyle() = m_styleReference;
     ImGui::GetStyle().ScaleAllSizes(scaleFromReference);
 
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    if (!m_options.Developer.DisableImGuiDocking)
+        ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     if (!ImGui_ImplWin32_Init(m_window.GetWindow()))
     {
@@ -349,6 +350,13 @@ void D3D12::PrepareUpdate()
         return;
 
     std::lock_guard _(m_imguiLock);
+
+    // docking flag must be set before NewFrame, synced every frame so the setting applies without restart
+    auto& io = ImGui::GetIO();
+    if (m_options.Developer.DisableImGuiDocking)
+        io.ConfigFlags &= ~ImGuiConfigFlags_DockingEnable;
+    else
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui_ImplWin32_NewFrame(m_outSize);
     ImGui::NewFrame();

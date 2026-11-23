@@ -102,6 +102,11 @@ void Settings::OnUpdate()
                     "Enables JIT compiler for Lua VM, which may majorly speed up the mods. Disable it in case you experience issues as a troubleshooting step (requires restart to "
                     "take effect).",
                     m_developer.EnableJIT, developerSettings.EnableJIT);
+                UpdateAndDrawSetting(
+                    "Disable ImGui Docking",
+                    "Disables docking of CET and mod windows into each other and to the screen edges. Enable docking by unchecking this if you want to build docked window "
+                    "layouts (docked layouts are lost when docking is disabled).",
+                    m_developer.DisableImGuiDocking, developerSettings.DisableImGuiDocking);
 
                 ImGui::EndTable();
             }

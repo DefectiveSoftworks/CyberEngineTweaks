@@ -48,6 +48,7 @@ struct DeveloperSettings
     uint64_t MaxLinesConsoleHistory{1000};
     bool PersistentConsole{true};
     bool EnableJIT{true};
+    bool DisableImGuiDocking{true};
 };
 
 struct Options
