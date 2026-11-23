@@ -4,6 +4,7 @@
 
 #include <CET.h>
 
+#include <config/CETVersion.h>
 #include <d3d12/D3D12.h>
 #include <scripting/LuaVM.h>
 #include <Utils.h>
@@ -223,7 +224,8 @@ void Overlay::Update()
     const auto heightLimit = 2 * ImGui::GetFrameHeight() + 2 * ImGui::GetStyle().WindowPadding.y;
     ImGui::SetNextWindowPos({width * 0.25f, height * 0.05f}, ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSizeConstraints({width * 0.5f, heightLimit}, {FLT_MAX, heightLimit});
-    if (ImGui::Begin("Cyber Engine Tweaks"))
+    // text after ### is the window ID, so the visible title can change without touching saved layouts
+    if (ImGui::Begin("Cyber Engine Tweaks v" CET_VERSION_SIMPLE " // Chromed by Defective Softworks###Cyber Engine Tweaks"))
         DrawToolbar();
     ImGui::End();
 
