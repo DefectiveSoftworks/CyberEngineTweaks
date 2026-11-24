@@ -9,6 +9,8 @@
 #include <scripting/LuaVM.h>
 #include <Utils.h>
 
+#include <random>
+
 void Overlay::PostInitialize()
 {
     if (!m_initialized)
@@ -224,8 +226,15 @@ void Overlay::Update()
     const auto heightLimit = 2 * ImGui::GetFrameHeight() + 2 * ImGui::GetStyle().WindowPadding.y;
     ImGui::SetNextWindowPos({width * 0.25f, height * 0.05f}, ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSizeConstraints({width * 0.5f, heightLimit}, {FLT_MAX, heightLimit});
-    // text after ### is the window ID, so the visible title can change without touching saved layouts
-    if (ImGui::Begin("Cyber Engine Tweaks v" CET_VERSION_SIMPLE " // Chromed by Defective Softworks###Cyber Engine Tweaks"))
+    // tagline is picked once per game session; text after ### is the window ID, so the visible title can vary without touching saved layouts
+    static const std::string s_title = []
+    {
+        constexpr std::array taglines = {"Retuned", "Recalibrated", "Remodded", "Rebooted", "Rechipped", "Retrofitted"};
+        std::random_device rd;
+        const char* tagline = taglines[std::uniform_int_distribution<size_t>(0, taglines.size() - 1)(rd)];
+        return fmt::format("Cyber Engine Tweaks v" CET_VERSION_SIMPLE " // {} by Defective Softworks###Cyber Engine Tweaks", tagline);
+    }();
+    if (ImGui::Begin(s_title.c_str()))
         DrawToolbar();
     ImGui::End();
 
